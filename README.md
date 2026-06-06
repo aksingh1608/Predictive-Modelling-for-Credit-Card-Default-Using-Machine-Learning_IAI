@@ -68,7 +68,7 @@ pip install -r requirements-app.txt
 
 ---
 
-## Part 1 — Run the assignment notebook
+## Part 1 — Run the notebook
 
 This is the **required** part for grading.
 
@@ -237,55 +237,9 @@ sed -i 's/\r$//' run_app.sh
 chmod +x run_app.sh
 ```
 
-In Cursor/VS Code, set **Files: Eol** to `\n` for this project.
-
-### `No exported model found`
-
-Run notebook **Section 7** after completing Task 4, or check that `models/model.joblib` exists.
-
-### `Model offline` in the web UI
-
-The API is not running. Start `./run_app.sh` and refresh the page.
-
-### Port 8000 already in use
-
 ```bash
 # Find and stop the old process, or use another port:
 python3 -m uvicorn api.main:app --host 127.0.0.1 --port 8001 --reload
-```
-
-### Cannot delete `.venv` in Cursor
-
-If `.venv` was created with wrong permissions:
-
-```bash
-sudo rm -rf .venv
-```
-
-You do **not** need a virtualenv — system/pyenv Python is fine.
-
-### Notebook vs web model mismatch
-
-Always re-export from **Section 7** after changing the notebook pipeline. The web app reads only from `models/`, not from the notebook directly.
-
----
-
-## What to submit (assignment)
-
-For grading, you typically need:
-
-- `Credit_Card_Default_Prediction.ipynb` (executed, with outputs)
-- `Credit_Card.csv` (if required by your instructor)
-
-The web app (`api/`, `web/`, `run_app.sh`) is **optional** unless your brief asks for a demo.
-
----
-
-## References
-
-- Yeh, I.-C. & Lien, C.-H. (2009) — UCI Credit Card Default dataset
-- Lundberg & Lee (2017) — SHAP
-- Chen & Guestrin (2016) — XGBoost
 
 ---
 
@@ -294,5 +248,3 @@ The web app (`api/`, `web/`, `run_app.sh`) is **optional** unless your brief ask
 See **[DEPLOY.md](DEPLOY.md)** for:
 
 - **Render** (recommended) — full app in one deploy
-- **Vercel + Render** — UI on Vercel, API on Render
-- **Vercel-only** — why it is hard for ML and what to change
