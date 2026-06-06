@@ -1,0 +1,13 @@
+{
+  "numeric": {
+    "LIMIT_BAL": 140000.0,
+    "AGE": 34.0,
+    "PAY_AMT1": 2153.0,
+    "PAY_AMT2": 2027.0
+  },
+  "categorical": {
+    "SEX": 2.0,
+    "EDUCATION": 2.0,
+    "MARRIAGE": 2.0
+  }
+}

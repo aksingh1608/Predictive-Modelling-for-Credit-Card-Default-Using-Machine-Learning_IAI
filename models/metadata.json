@@ -1,0 +1,72 @@
+{
+  "model_name": "Random Forest (tuned)",
+  "target": "default.payment.next.month",
+  "source": "Credit_Card_Default_Prediction.ipynb",
+  "use_tuned": true,
+  "n_features": 73,
+  "risk_threshold": 0.5,
+  "test_auc_roc": 0.7926,
+  "test_f1": 0.529,
+  "top_features": [
+    {
+      "name": "PAY_0",
+      "importance": 0.153
+    },
+    {
+      "name": "RISK_RATING",
+      "importance": 0.1459
+    },
+    {
+      "name": "PAY_2",
+      "importance": 0.1128
+    },
+    {
+      "name": "PAY_3",
+      "importance": 0.0749
+    },
+    {
+      "name": "PAY_5",
+      "importance": 0.0423
+    },
+    {
+      "name": "PAY_4",
+      "importance": 0.0346
+    },
+    {
+      "name": "LIMIT_BAL",
+      "importance": 0.0334
+    },
+    {
+      "name": "PAY_6",
+      "importance": 0.0333
+    },
+    {
+      "name": "PAY_AMT1",
+      "importance": 0.0309
+    },
+    {
+      "name": "PAY_AMT2",
+      "importance": 0.0299
+    },
+    {
+      "name": "PAY_AMT3",
+      "importance": 0.0296
+    },
+    {
+      "name": "BILL_AMT1",
+      "importance": 0.0288
+    },
+    {
+      "name": "PAY_AMT4",
+      "importance": 0.0272
+    },
+    {
+      "name": "BILL_AMT2",
+      "importance": 0.0238
+    },
+    {
+      "name": "PAY_AMT5",
+      "importance": 0.0235
+    }
+  ]
+}

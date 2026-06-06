@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credit Default Risk — IAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="header">
+    <div class="logo">
+      <span class="logo-mark">◆</span>
+      <div>
+        <h1>Default Risk</h1>
+        <p>Credit card · decision support</p>
+      </div>
+    </div>
+    <div id="model-badge" class="badge">Loading model…</div>
+  </header>
+
+  <section class="insights-bar" id="insights-bar">
+    <div class="insight-card">
+      <span class="insight-label">Model</span>
+      <span class="insight-value" id="insight-model">—</span>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Test AUC</span>
+      <span class="insight-value" id="insight-auc">—</span>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Test F1</span>
+      <span class="insight-value" id="insight-f1">—</span>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Decision threshold</span>
+      <span class="insight-value" id="insight-threshold">—</span>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="panel form-panel">
+      <h2>Client profile</h2>
+      <p class="subtitle">Score a profile, explore what-if scenarios, and get actionable recommendations — not just a probability.</p>
+
+      <form id="predict-form">
+        <fieldset>
+          <legend>Demographics</legend>
+          <div class="grid-3">
+            <label>Credit limit (NT$)
+              <input type="number" name="LIMIT_BAL" value="140000" min="10000" step="1000" required />
+            </label>
+            <label>Age
+              <input type="number" name="AGE" value="34" min="18" max="100" required />
+            </label>
+            <label>City
+              <select name="CITY" id="city-select"><option value="City_1">City_1</option></select>
+            </label>
+            <label>Sex
+              <select name="SEX"><option value="1">Male</option><option value="2" selected>Female</option></select>
+            </label>
+            <label>Education
+              <select name="EDUCATION">
+                <option value="1">Graduate school</option>
+                <option value="2" selected>University</option>
+                <option value="3">High school</option>
+                <option value="4">Other</option>
+              </select>
+            </label>
+            <label>Marriage
+              <select name="MARRIAGE">
+                <option value="1">Married</option>
+                <option value="2" selected>Single</option>
+                <option value="3">Other</option>
+              </select>
+            </label>
+            <label>Risk rating
+              <select name="RISK_RATING">
+                <option value="1" selected>1 — Low</option>
+                <option value="2">2 — Medium</option>
+                <option value="3">3 — High</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Payment status (months delayed)</legend>
+          <p class="hint">Negative = paid on time. Positive = months late.</p>
+          <div class="grid-3">
+            <label>PAY_0 (latest)<input type="number" name="PAY_0" value="0" min="-2" max="9" /></label>
+            <label>PAY_2<input type="number" name="PAY_2" value="0" min="-2" max="9" /></label>
+            <label>PAY_3<input type="number" name="PAY_3" value="0" min="-2" max="9" /></label>
+            <label>PAY_4<input type="number" name="PAY_4" value="0" min="-2" max="9" /></label>
+            <label>PAY_5<input type="number" name="PAY_5" value="0" min="-2" max="9" /></label>
+            <label>PAY_6<input type="number" name="PAY_6" value="0" min="-2" max="9" /></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Bill amounts (NT$)</legend>
+          <div class="grid-3">
+            <label>Bill 1<input type="number" name="BILL_AMT1" value="3913" step="1" /></label>
+            <label>Bill 2<input type="number" name="BILL_AMT2" value="3102" step="1" /></label>
+            <label>Bill 3<input type="number" name="BILL_AMT3" value="689" step="1" /></label>
+            <label>Bill 4<input type="number" name="BILL_AMT4" value="0" step="1" /></label>
+            <label>Bill 5<input type="number" name="BILL_AMT5" value="0" step="1" /></label>
+            <label>Bill 6<input type="number" name="BILL_AMT6" value="0" step="1" /></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Payment amounts (NT$)</legend>
+          <div class="grid-3">
+            <label>Pay 1<input type="number" name="PAY_AMT1" value="0" step="1" /></label>
+            <label>Pay 2<input type="number" name="PAY_AMT2" value="689" step="1" /></label>
+            <label>Pay 3<input type="number" name="PAY_AMT3" value="0" step="1" /></label>
+            <label>Pay 4<input type="number" name="PAY_AMT4" value="0" step="1" /></label>
+            <label>Pay 5<input type="number" name="PAY_AMT5" value="0" step="1" /></label>
+            <label>Pay 6<input type="number" name="PAY_AMT6" value="0" step="1" /></label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submit-btn">Assess default risk</button>
+          <button type="button" class="btn-ghost" id="sample-low-btn">Low risk sample</button>
+          <button type="button" class="btn-ghost" id="sample-high-btn">High risk sample</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="sidebar">
+      <section class="panel result-panel" id="result-panel">
+        <h2>Risk assessment</h2>
+        <div id="result-empty" class="empty-state">
+          <div class="ring" aria-hidden="true"></div>
+          <p>Submit the form to score this client and see recommendations.</p>
+        </div>
+
+        <div id="result-content" class="result-content hidden">
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 200 120" class="gauge" aria-hidden="true">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#2a2a32" stroke-width="12" stroke-linecap="round"/>
+              <path id="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
+            </svg>
+            <div class="gauge-value">
+              <span id="prob-pct">—</span>
+              <small>default probability</small>
+            </div>
+          </div>
+
+          <div id="risk-pill" class="risk-pill">—</div>
+          <p id="model-used" class="meta"></p>
+
+          <div id="pay-summary" class="pay-summary hidden"></div>
+
+          <h3>Key drivers</h3>
+          <ul id="drivers-list" class="drivers"></ul>
+
+          <h3>Recommended actions</h3>
+          <ul id="recommendations-list" class="recommendations"></ul>
+
+          <div class="whatif-section">
+            <h3>What-if scenarios</h3>
+            <p class="hint">Compare how behaviour changes affect the score.</p>
+            <button type="button" class="btn-ghost btn-block" id="whatif-btn" disabled>
+              Run what-if analysis
+            </button>
+            <div id="whatif-results" class="whatif-results hidden"></div>
+          </div>
+        </div>
+
+        <div id="error-box" class="error-box hidden"></div>
+      </section>
+
+      <section class="panel features-panel" id="features-panel">
+        <h2>Global feature importance</h2>
+        <p class="hint">From the exported model (matches notebook SHAP ranking).</p>
+        <ul id="global-features" class="global-features"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>BSBI · Introduction to AI, Aryan Kumar Singh</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

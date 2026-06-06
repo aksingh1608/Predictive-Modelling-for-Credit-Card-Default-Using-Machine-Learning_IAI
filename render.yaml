@@ -1,0 +1,14 @@
+# Render Blueprint — one-click deploy for the full app (API + web UI)
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: credit-default-risk
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-app.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.0"
