@@ -126,23 +126,6 @@ The web app uses the **same pipeline as the notebook**. You must export after tr
 
    You should see at least: `model.joblib`, `scaler.joblib`, `metadata.json`, `feature_columns.json`.
 
-3. Optional check:
-
-   ```bash
-   python3 -c "import json; print(json.load(open('models/metadata.json')))"
-   ```
-
-   **Note:** Section 7 is wrapped in `try/except` — if `scripts/export_for_app.py` is missing, export will fail silently with a message. Ensure the `scripts/` folder is present.
-
-### Re-export after notebook changes
-
-If you change the notebook pipeline or retrain:
-
-```bash
-rm -rf models/
-# Then re-run notebook Section 7
-```
-
 ---
 
 ## Part 3 — Run the web application
